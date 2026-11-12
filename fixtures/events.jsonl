@@ -1,0 +1,15 @@
+# shop A / B event-time stream. ts is epoch milliseconds (synthetic small values).
+# Order is the arrival order (not sorted).
+{"ts": 1000, "shop_id": "A", "amount": 10, "sku": "apple"}
+{"ts": 4000, "shop_id": "A", "amount": 2, "sku": "pear"}
+{"ts": 2500, "shop_id": "A", "amount": 7, "sku": "apple"}
+{"ts": 3000, "shop_id": "B", "amount": 4, "sku": "tea"}
+{"ts": 12000, "shop_id": "A", "amount": 4, "sku": "plum"}
+{"ts": 8000, "shop_id": "B", "amount": 6, "sku": "tea"}
+{"ts": 13000, "shop_id": "A", "amount": 1, "sku": "plum"}
+{"ts": 16000, "shop_id": "A", "amount": 8, "sku": "apple"}
+{"ts": 2000, "shop_id": "A", "amount": 6, "sku": "pear"}
+{"ts": 21000, "shop_id": "B", "amount": 3, "sku": "cake"}
+{"ts": 25000, "shop_id": "A", "amount": 9, "sku": "fig"}
+{"ts": 500, "shop_id": "A", "amount": 1, "sku": "apple"}
+{"ts": 28000, "shop_id": "A", "amount": 5, "sku": "fig"}

@@ -1,0 +1,91 @@
+{
+  "name": "shop_windows",
+  "event_time_field": "ts",
+  "key_fields": [
+    "shop_id"
+  ],
+  "watermarks": {
+    "lag_ms": 5000,
+    "idle_eof": true
+  },
+  "allowed_lateness_ms": 10000,
+  "output_mode": "append",
+  "triggers": {
+    "on_watermark": true,
+    "early_every_ms": null,
+    "on_late": true
+  },
+  "windows": [
+    {
+      "name": "t10s",
+      "type": "tumbling",
+      "size_ms": 10000,
+      "offset_ms": 0,
+      "aggs": [
+        {
+          "fn": "count",
+          "as": "n"
+        },
+        {
+          "fn": "sum",
+          "field": "amount",
+          "as": "sum_amount"
+        },
+        {
+          "fn": "min",
+          "field": "amount",
+          "as": "min_amount"
+        },
+        {
+          "fn": "max",
+          "field": "amount",
+          "as": "max_amount"
+        },
+        {
+          "fn": "avg",
+          "field": "amount",
+          "as": "avg_amount"
+        },
+        {
+          "fn": "distinct_count",
+          "field": "sku",
+          "as": "skus"
+        }
+      ]
+    },
+    {
+      "name": "s15s",
+      "type": "sliding",
+      "size_ms": 15000,
+      "slide_ms": 5000,
+      "offset_ms": 0,
+      "aggs": [
+        {
+          "fn": "count",
+          "as": "n"
+        },
+        {
+          "fn": "sum",
+          "field": "amount",
+          "as": "sum_amount"
+        }
+      ]
+    },
+    {
+      "name": "sess8s",
+      "type": "session",
+      "gap_ms": 8000,
+      "aggs": [
+        {
+          "fn": "count",
+          "as": "n"
+        },
+        {
+          "fn": "sum",
+          "field": "amount",
+          "as": "sum_amount"
+        }
+      ]
+    }
+  ]
+}
