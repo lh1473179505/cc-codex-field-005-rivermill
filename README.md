@@ -9,7 +9,9 @@ A small event-time window aggregator for JSONL streams. This snapshot already ha
 - JSONL sink and checkpoint document helpers
 - `python -m rivermill inspect`
 
-The engine itself is **not** implemented. `python -m rivermill run` is the stub you are expected to fill in, following `docs/semantics.md`.
+The engine in `rivermill/engine.py` implements `python -m rivermill run` following
+`docs/semantics.md`: watermark-driven tumbling/sliding/session windows, allowed-lateness
+handling with a `late.jsonl` side output, append-mode revisions, and resumable checkpoints.
 
 ## Requirements
 
@@ -21,7 +23,12 @@ The engine itself is **not** implemented. `python -m rivermill run` is the stub 
 ```bash
 python -m rivermill inspect --job jobs/shop_windows.json --input fixtures/events.jsonl
 python -m rivermill run --job jobs/shop_windows.json --input fixtures/events.jsonl --out /tmp/rivermill-out --checkpoint /tmp/rivermill-out/ckpt.json
+# resume: already-emitted records are deduplicated, open window state is restored
+python -m rivermill run --job jobs/shop_windows.json --input fixtures/events.jsonl --out /tmp/rivermill-out --from-checkpoint /tmp/rivermill-out/ckpt.json
 ```
+
+A run writes `windows.jsonl` (on-time records with `is_late=false, revision=0`, plus
+append-only late refinements) and `late.jsonl` (events later than `allowed_lateness_ms`).
 
 ## Layout
 
